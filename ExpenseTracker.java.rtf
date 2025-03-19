@@ -1,0 +1,122 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2821
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww38200\viewh21600\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 import java.util.ArrayList;\
+import java.util.Scanner;\
+\
+// Class to store expense details\
+class Expense \{\
+    String category;\
+    double amount;\
+    String date;\
+\
+    // Constructor\
+    public Expense(String category, double amount, String date) \{\
+        this.category = category;\
+        this.amount = amount;\
+        this.date = date;\
+    \}\
+\
+    // Method to display expense details\
+    public void displayExpense() \{\
+        System.out.println("Date: " + date);\
+        System.out.println("Category: " + category);\
+        System.out.println("Amount: $" + amount);\
+    \}\
+\}\
+\
+public class ExpenseTracker \{\
+    // List to store all expenses\
+    static ArrayList<Expense> expenseList = new ArrayList<>();\
+    static Scanner scanner = new Scanner(System.in);\
+\
+    public static void main(String[] args) \{\
+        int choice;\
+\
+        // Main menu loop\
+        do \{\
+            System.out.println("\\nWelcome to Expense Tracker");\
+            System.out.println("1) Add Expense");\
+            System.out.println("2) View Summary");\
+            System.out.println("3) Exit");\
+            System.out.print("Enter your choice: ");\
+            choice = scanner.nextInt();\
+            scanner.nextLine(); // Consume newline\
+\
+            // Call appropriate method based on user choice\
+            switch (choice) \{\
+                case 1:\
+                    addExpense();\
+                    break;\
+                case 2:\
+                    viewSummary();\
+                    break;\
+                case 3:\
+                    System.out.println("Exiting program. Goodbye!");\
+                    break;\
+                default:\
+                    System.out.println("Invalid choice. Please try again.");\
+            \}\
+        \} while (choice != 3);\
+    \}\
+\
+    // Method to add an expense\
+    public static void addExpense() \{\
+        double amount;\
+        String category, date;\
+\
+        // Input validation for amount\
+        do \{\
+            System.out.print("Enter Expense Amount: ");\
+            while (!scanner.hasNextDouble()) \{ // Handling invalid input\
+                System.out.println("Invalid input. Please enter a numeric value.");\
+                scanner.next(); // Discard invalid input\
+            \}\
+            amount = scanner.nextDouble();\
+            scanner.nextLine(); // Consume newline\
+            if (amount <= 0) \{\
+                System.out.println("Expense amount must be greater than zero.");\
+            \}\
+        \} while (amount <= 0);\
+\
+        // Input for category\
+        System.out.print("Enter Expense Category (e.g., Groceries, Rent, Entertainment): ");\
+        category = scanner.nextLine();\
+\
+        // Input for date\
+        System.out.print("Enter Expense Date (YYYY-MM-DD) or type 'today' for current date: ");\
+        date = scanner.nextLine();\
+        if (date.equalsIgnoreCase("today")) \{\
+            date = java.time.LocalDate.now().toString(); // Get current system date\
+        \}\
+\
+        // Store the expense\
+        expenseList.add(new Expense(category, amount, date));\
+        System.out.println("Expense logged successfully!");\
+    \}\
+\
+    // Method to display expense summary\
+    public static void viewSummary() \{\
+        if (expenseList.isEmpty()) \{\
+            System.out.println("No expenses recorded.");\
+            return;\
+        \}\
+\
+        System.out.println("\\nExpense Summary:");\
+        double total = 0;\
+\
+        // Loop through all expenses and display details\
+        for (Expense exp : expenseList) \{\
+            exp.displayExpense();\
+            System.out.println("---------------------");\
+            total += exp.amount;\
+        \}\
+        \
+        // Display total expenses\
+        System.out.println("Total Expenses: $" + total);\
+    \}\
+\}}
